@@ -24,7 +24,7 @@ app.get('/notes', function (req,res) {
     var returnData = [];
 	myDataRef.once("value", function(snap) {
         snap.forEach(function(valueSnap) {
-            returnData.push({x:parseFloat(valueSnap.val().x), y:parseFloat(valueSnap.val().y), z:parseFloat(valueSnap.val().z), text:valueSnap.val().text, color:parseInt(valueSnap.val().color});
+            returnData.push({x:parseFloat(valueSnap.val().x), y:parseFloat(valueSnap.val().y), z:parseFloat(valueSnap.val().z), text:valueSnap.val().text, color:parseInt(valueSnap.val().color)});
         })
 		//console.log("All data: ", snap.val());
         console.log("Return data: ", returnData);
