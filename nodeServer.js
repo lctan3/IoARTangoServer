@@ -15,12 +15,16 @@ app.use(bodyParser.json());
 // Initializing Firebase Backend
 var myDataRef = new Firebase('https://luminous-heat-8591.firebaseio.com/');
 
+app.get('/', function(req, res) {
+  res.sendFile(__dirname+ '/index.html');
+});
+
 // Server responding to GET request
 app.get('/notes', function (req,res) {
     var returnData = [];
 	myDataRef.once("value", function(snap) {
         snap.forEach(function(valueSnap) {
-            returnData.push({x:parseFloat(valueSnap.val().x), y:parseFloat(valueSnap.val().y), z:parseFloat(valueSnap.val().z), image:valueSnap.val().image});
+            returnData.push({x:parseFloat(valueSnap.val().x), y:parseFloat(valueSnap.val().y), z:parseFloat(valueSnap.val().z), text:valueSnap.val().text, color:parseInt(valueSnap.val().color});
         })
 		//console.log("All data: ", snap.val());
         console.log("Return data: ", returnData);
@@ -59,24 +63,27 @@ app.post('/notes', function (req,res) {
         var noteDict = {};
         var splitData = body.split("&");
 
-        if (splitData[0] && splitData[1] && splitData[2] && splitData[3]) {
+        if (splitData[0] && splitData[1] && splitData[2] && splitData[3] && splitData[4]) {
 
             var first = splitData[0].split("=")
             var second = splitData[1].split("=")
             var third = splitData[2].split("=")
             var fourth = splitData[3].split("=")
+            var fifth = splitData[4].split("=")
 
             noteDict[first[0]] = first[1]
             noteDict[second[0]] = second[1]
             noteDict[third[0]] = third[1]
             noteDict[fourth[0]] = fourth[1]
+            noteDict[fifth[0]] = fifth[1]
 
             var x = noteDict["x"];
             var y = noteDict["y"];
             var z = noteDict["z"];
-            var image = noteDict["image"];
+            var text = noteDict["text"];
+            var color = noteDict["color"];
 
-            myDataRef.push({image:image, x:x, y:y, z:z});
+            myDataRef.push({text:text, x:x, y:y, z:z, color: color});
 
         } else {
             console.log("invalid data format");
