@@ -41,7 +41,6 @@ app.post('/notes', function (req,res) {
 
 	// Storing data into database
 
-    console.log("POST RECEIVED: ");
     // console.log(req.param("x"));
     // console.log(req.params.x);
 
@@ -84,6 +83,7 @@ app.post('/notes', function (req,res) {
             var color = noteDict["color"];
 
             myDataRef.push({text:text, x:x, y:y, z:z, color: color});
+            console.log("POST RECEIVED: ");
 
         } else {
             console.log("invalid data format");
@@ -94,12 +94,12 @@ app.post('/notes', function (req,res) {
     // Event listener for after end of data reached (perform actions to be done after data is processed here)
     req.on('end', function () {
         //console.log("Body: " + body);
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end('post received');
 
     });
 
     // Writing to the response and sending it
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.end('post received');
 });
 
 // App listening on Port 3000
